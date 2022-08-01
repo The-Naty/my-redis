@@ -37,18 +37,25 @@ async function getRepos(req, res, next) {
   }
 }
 
-function cache(req, res, next) {
+async function cache(req, res, next) {
   const { username } = req.params;
 
-  client.get(username, (error, data) => {
-    if (error) throw error;
+  let isCached = false;
 
-    if (data !== null) {
-      res.send(setResponse(username, data));
+  try {
+    const response = await client.get(username);
+    if (response) {
+      isCached = true;
+      data = JSON.parse(response);
     } else {
       next();
     }
-  });
+
+    res.send(setResponse(username, data));
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+  }
 }
 
 app.get("/repos/:username", cache, getRepos);
