@@ -29,7 +29,7 @@ async function getRepos(req, res, next) {
     const repos = data.public_repos;
 
     const result = await client.set(username, repos, "EX", 3600);
-
+    console.log(result);
     res.send(setResponse(username, repos));
   } catch (error) {
     console.log(error);
