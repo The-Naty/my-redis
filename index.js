@@ -9,6 +9,7 @@ const client = redis.createClient(REDIS_PORT);
 client.connect().then(() => {
   console.log("Connected to redis");
 });
+
 const app = express();
 
 function setResponse(username, repos) {
@@ -21,9 +22,9 @@ async function getRepos(req, res, next) {
 
     const { username } = req.params;
 
-    const respone = await fetch(`https://api.github.com/users/${username}`);
+    const response = await fetch(`https://api.github.com/users/${username}`);
 
-    const data = await respone.json();
+    const data = await response.json();
 
     const repos = data.public_repos;
 
