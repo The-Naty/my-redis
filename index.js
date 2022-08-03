@@ -47,11 +47,10 @@ async function cache(req, res, next) {
     if (response) {
       isCached = true;
       data = JSON.parse(response);
+      res.send(setResponse(username, data));
     } else {
       next();
     }
-
-    res.send(setResponse(username, data));
   } catch (error) {
     console.log(error);
     res.status(500);
